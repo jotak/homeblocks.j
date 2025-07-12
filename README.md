@@ -52,9 +52,10 @@ If `tlsCertPath` or `tlsKeyPath` are omitted, starts without TLS.
 
 - To not run as root on ports 80/443, needs some host config; as described here: https://superuser.com/questions/710253/allow-non-root-process-to-bind-to-port-80-and-443.
 
-For instance, if the host isn't shared with multiple users, it is good enough to change the unprivileged port config via:
-```bash
-sysctl -w net.ipv4.ip_unprivileged_port_start=80
+For instance, if the host isn't shared with multiple users, it is good enough to change the unprivileged port config by editing `/etc/sysctl.conf`:
+
+```
+net.ipv4.ip_unprivileged_port_start=80
 ```
 
 Make also sure the key & certificates are readable for the user.
@@ -62,5 +63,5 @@ Make also sure the key & certificates are readable for the user.
 ### Run
 
 ```bash
-java -classpath target/homeblocks-0.0.2-fat.jar net.homeblocks.MainVerticle
+java -classpath java/homeblocks-0.0.2-fat.jar net.homeblocks.MainVerticle
 ```
