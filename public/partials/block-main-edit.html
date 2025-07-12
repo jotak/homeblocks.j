@@ -1,0 +1,7 @@
+<span>
+    <a ng-click="viewMode()" ng-mouseover="page.message='Switch to view mode'"><i class="fa fa-eye"></i></a>&nbsp;
+    Welcome in edit view, {{ refUser }}!<br/>
+    <br/>Beware that <b>everything here is public</b>, so ban passwords and secrets!<br/>
+    <br/>
+    <div ng-bind-html="page.message"></div>
+</span>

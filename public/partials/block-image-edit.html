@@ -1,0 +1,17 @@
+<i class="block-type fa fa-picture-o"></i>
+<ul>
+    <li ng-repeat="link in block.links">
+        <div ng-show="!link.editing">
+            <a ng-if="$index > 0" ng-click="onItemUp(block.links, $index);" ng-mouseover="page.message='Move up'"><i class="fa fa-arrow-circle-o-up"></i></a>
+            <a ng-click='onEditItem(link, "linkTitle_" + block.id + "_" + $index);' ng-mouseover="page.message='Edit URL'">{{ link.title }}</a>
+            <a ng-click="onDeleteItem(block.links, $index);" ng-mouseover="page.message='Delete URL'"><i class="fa fa-trash"></i></a>
+        </div>
+        <div ng-show="link.editing">
+            <input type='text' id='{{ "linkTitle_" + block.id + "_" + $index }}' placeholder='Title' ng-model='link.title' press-enter="onSaveItem(link);"><br/>
+            <input type='text' placeholder='Image URL' ng-model='link.url' press-enter="onSaveItem(link);">
+            <input type='button' value='Ok' ng-click="onSaveItem(link);">
+        </div>
+    </li>
+</ul>
+<a ng-click="onCreateLink(block);" ng-mouseover="page.message='Add image URL'"><i class="fa fa-plus-circle"></i></a>
+<a ng-click="onDeleteBlock(block);" ng-mouseover="page.message='Remove this block'" class="del-block"><i class="fa fa-trash"></i></a>

@@ -1,0 +1,3 @@
+<ul class="block-image" style="width:100%; height:100%;">
+    <li ng-repeat="link in block.links" ng-class="{ visible: block.active == $index }" style="background-image: url({{ link.url }}); background-repeat: no-repeat; background-position: center; background-size: contain; width: 100%; height: 100%; position: absolute"></li>
+</ul>

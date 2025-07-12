@@ -1,0 +1,32 @@
+<span ng-if="block.id == 0">
+    <a ng-show="!isLoggedIn" ng-click="onClickLogin()" ng-mouseover="page.message='Log in'"><i class="fa fa-user"></i></a>
+    <a ng-show="isAtHome" ng-click="onClickNew()" ng-mouseover="page.message='Create a new profile'"><i class="fa fa-file-o"></i></a>&nbsp;
+    <a ng-show="isAtHome && isOnProfile" ng-click="onClickEdit()" ng-mouseover="page.message='Switch to edit mode'"><i class="fa fa-pencil-square-o"></i></a>&nbsp;
+    <a ng-show="isAtHome && isOnProfile" ng-click="onClickUpload()" ng-mouseover="page.message='Upload json'"><i class="fa fa-cloud-upload"></i></a>
+    <a ng-if="isLoggedIn && !isAtHome" ng-click="onClickHome()" ng-mouseover="page.message='Go home'"><i class="fa fa-home"></i></a>
+    <a ng-show="isOnProfile" ng-click="onClickDownload()" ng-mouseover="page.message='Show json'"><i class="fa fa-cloud-download"></i></a>
+    <a ng-show="isAtHome" ng-click="onClickAlias()" ng-mouseover="page.message='Change alias'"><i class="fa fa-at"></i></a>
+    <a ng-show="isLoggedIn" ng-click="onClickLogout()" ng-mouseover="page.message='Log out'"><i class="fa fa-user-times"></i></a>
+    <div ng-class="{'hidden': !showNew }">
+        <input id='newName' type='text' placeholder='Name' ng-model='newName' press-enter="onNew(newName);"><br/>
+        <input type='button' value='Ok' ng-click="onNew(newName);">
+    </div>
+    <div ng-class="{'hidden': !showDuplicate }">
+        <input id='dupName' type='text' placeholder='Name' ng-model='dupName'><br/>
+        <input type='password' placeholder='Password' ng-model='dupPwd' press-enter="onDuplicate(dupName, dupPwd);"><br/>
+        <input type='button' value='Ok' ng-click="onDuplicate(dupName, dupPwd);">
+    </div>
+    <div ng-class="{'hidden': !showUpload }">
+        <textarea id="ulJson" ng-model='uploadProfile'></textarea><br/>
+        <input type='button' value='Ok' ng-click="onUpload(uploadProfile);">
+    </div>
+    <div ng-class="{'hidden': !showAlias }">
+        <input id='alias' type='text' placeholder='Login alias' ng-model='alias' press-enter="onSetAlias(alias);"><br/>
+        <input type='button' value='Ok' ng-click="onSetAlias(alias);">
+    </div>
+    <div ng-class="{'hidden': !showJson }">
+        <textarea id="dlJson">{{ strJson }}</textarea><br/>
+    </div>
+    <br/><br/>
+    <div ng-bind-html="page.message || 'Welcome at ' + title + '!'"></div>
+</span>

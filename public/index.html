@@ -1,0 +1,27 @@
+<!doctype html>
+
+<html ng-app="homeblocks">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ title }}</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="common-layout.css">
+    <script src="inc/angular.min.js"></script>
+    <script src="inc/angular-route.min.js"></script>
+    <script src="inc/angular-sanitize.min.js"></script>
+    <script src="inc/q.js"></script>
+    <script src="app.js"></script>
+    <script src="mainview.js"></script>
+    <script src="loginview.js"></script>
+    <script src="editview.js"></script>
+    <script src="block.js"></script>
+</head>
+<body>
+    <div ng-view></div>
+</body>
+</html>

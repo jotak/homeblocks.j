@@ -1,0 +1,6 @@
+<div class="block-title" ng-if="block.title">{{ block.title }}</div>
+<ul>
+    <li ng-repeat="link in block.links">
+        <a href="{{ link.url }}" ng-mouseover="page.message=link.description">{{ link.title }}</a>
+    </li>
+</ul>

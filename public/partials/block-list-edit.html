@@ -1,0 +1,16 @@
+<i class="block-type fa fa-list"></i>
+<ul>
+    <li ng-repeat="item in block.list">
+        <div ng-class="{'hidden': item.editing }">
+            <a ng-if="$index > 0" ng-click="onItemUp(block.list, $index);" ng-mouseover="page.message='Move up'"><i class="fa fa-arrow-circle-o-up"></i></a>
+            <a ng-click='onEditItem(link, "itemTitle_" + block.id + "_" + $index);' ng-mouseover="page.message='Edit item'">{{ item.value }}</a>
+            <a ng-click="onDeleteItem(block.list, $index);" ng-mouseover="page.message='Delete item'"><i class="fa fa-trash"></i></a>
+        </div>
+        <div ng-class="{'hidden': !item.editing }">
+            <input type='text' placeholder='Value' ng-model='item.value' press-enter="onSaveItem(item);">
+            <input type='button' value='Ok' ng-click="onSaveItem(item);">
+        </div>
+    </li>
+</ul>
+<a ng-click="onCreateListItem(block);" ng-mouseover="page.message='Add an item'"><i class="fa fa-plus-circle"></i></a>
+<a ng-click="onDeleteBlock(block);" ng-mouseover="page.message='Remove this block'" class="del-block"><i class="fa fa-trash"></i></a>

@@ -1,0 +1,5 @@
+<div class="block-title" ng-if="block.title">{{ block.title }}</div>
+<select ng-init="block.selected = block.links[0].url" ng-model="block.selected">
+    <option ng-repeat="link in block.links" value="{{ link.url }}">{{ link.title }}</option>
+</select>
+<div trusted-url type="video" src="block.selected"></div>

@@ -1,0 +1,11 @@
+<a ng-if="block.N" ng-click="onSwapBlocks(block, block.posx, block.posy-1);" class="btn-north" ng-mouseover="page.message='Swap blocks'"><i class="fa fa-refresh"></i></a>
+<a ng-if="block.E" ng-click="onSwapBlocks(block, block.posx+1, block.posy);" class="btn-east" ng-mouseover="page.message='Swap blocks'"><i class="fa fa-refresh"></i></a>
+<a ng-if="!block.N" ng-click="block.createN = !block.createN;" class="btn-north" ng-mouseover="page.message='Create a block'"><i class="fa fa-plus-square"></i></a>
+<a ng-if="!block.S" ng-click="block.createS = !block.createS;" class="btn-south" ng-mouseover="page.message='Create a block'"><i class="fa fa-plus-square"></i></a>
+<a ng-if="!block.E" ng-click="block.createE = !block.createE;" class="btn-east" ng-mouseover="page.message='Create a block'"><i class="fa fa-plus-square"></i></a>
+<a ng-if="!block.W" ng-click="block.createW = !block.createW;" class="btn-west" ng-mouseover="page.message='Create a block'"><i class="fa fa-plus-square"></i></a>
+
+<ul ng-show="block.createN" class="btn-north" ng-repeat="position in [{x: 0, y: -1, visibleFlag: 'createN'}]" ng-include="'partials/blocks-types.html'"></ul>
+<ul ng-show="block.createS" class="btn-south" ng-repeat="position in [{x: 0, y: 1, visibleFlag: 'createS'}]" ng-include="'partials/blocks-types.html'"></ul>
+<ul ng-show="block.createE" class="btn-east" ng-repeat="position in [{x: 1, y: 0, visibleFlag: 'createE'}]" ng-include="'partials/blocks-types.html'"></ul>
+<ul ng-show="block.createW" class="btn-west" ng-repeat="position in [{x: -1, y: 0, visibleFlag: 'createW'}]" ng-include="'partials/blocks-types.html'"></ul>
