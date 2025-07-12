@@ -33,12 +33,12 @@ public class Server {
             });
 
             // Keep listening on 80, and redirect
-            vertx.createHttpServer().requestHandler(it -> {
+            vertx.createHttpServer().requestHandler(it ->
                 it.response()
                         .setStatusCode(301)
                         .putHeader("Location", it.absoluteURI().replace("http", "https"))
-                        .end();
-            }).listen(opts.clearPort(), http -> {
+                        .end()
+            ).listen(opts.clearPort(), http -> {
                 if (http.succeeded()) {
                     System.out.println("HTTP server started, redirecting to HTTPS");
                 } else {

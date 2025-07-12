@@ -77,7 +77,7 @@ public class Routes {
     private static String getLoggedUserName(RoutingContext ctx) {
         var logged = getLoggedUser(ctx);
         if (logged != null) {
-            return logged.userInfo().name;
+            return logged.userInfo().name();
         }
         return null;
     }
@@ -85,7 +85,7 @@ public class Routes {
     private static boolean isValidLoggedUser(RoutingContext ctx, UserInfo user) {
       var logged = getLoggedUser(ctx);
       if (logged != null) {
-        if (user.intIdx == logged.userInfo().intIdx) {
+        if (user.intIdx() == logged.userInfo().intIdx()) {
           return !logged.oAuthUser().expired();
         }
       }
@@ -95,7 +95,7 @@ public class Routes {
     private static void updateLoggedUser(RoutingContext ctx, UserInfo newUser) {
         var logged = getLoggedUser(ctx);
         if (logged != null) {
-            if (newUser.intIdx == logged.userInfo().intIdx) {
+            if (newUser.intIdx() == logged.userInfo().intIdx()) {
                 var session = ctx.session();
                 if (session != null) {
                     session.put("user", new HttpUser(logged.oAuthUser(), newUser, logged.stateToken()));
@@ -119,9 +119,9 @@ public class Routes {
 
     private void postLoginPage(RoutingContext ctx) {
         try {
-            ctx.request().bodyHandler(b -> {
-                ctx.response().end(Profiles.singleBlockLogin(buildLoginPageInfo(b.toJsonObject())).toString());
-            });
+            ctx.request().bodyHandler(b ->
+                    ctx.response().end(Profiles.singleBlockLogin(buildLoginPageInfo(b.toJsonObject())).toString())
+            );
         } catch (Throwable e) {
             error(ctx, 500, e.toString());
             e.printStackTrace();
@@ -150,10 +150,10 @@ public class Routes {
         if (logged != null) {
             var json = popState(logged.stateToken());
             if (json != null) {
-                json.put("logged", logged.userInfo().name);
+                json.put("logged", logged.userInfo().name());
                 ctx.response().end(json.toString());
             } else {
-                ctx.response().end(new JsonObject().put("logged", logged.userInfo().name).toString());
+                ctx.response().end(new JsonObject().put("logged", logged.userInfo().name()).toString());
             }
         } else {
             ctx.response().end();
@@ -168,7 +168,7 @@ public class Routes {
             if (userInfo != null) {
                 var logged = getLoggedUserName(ctx);
                 try {
-                    var profiles = profileService.list(userInfo.intIdx);
+                    var profiles = profileService.list(userInfo.intIdx());
                     res.end(Profiles.user(user, profiles, logged).toString());
                 } catch (Throwable t) {
                     res.end(Profiles.notFound404().toString());
@@ -189,7 +189,7 @@ public class Routes {
             if (userInfo != null) {
                 var logged = getLoggedUserName(ctx);
                 try {
-                    var page = profileService.load(userInfo.intIdx, profile);
+                    var page = profileService.load(userInfo.intIdx(), profile);
                     res.end(Profiles.page(user, profile, page, logged).toString());
                 } catch (Throwable t) {
                     res.end(Profiles.notFound404().toString());
@@ -212,7 +212,7 @@ public class Routes {
                 if (isValidLoggedUser(ctx, userInfo)) {
                     var logged = getLoggedUserName(ctx);
                     try {
-                        var page = profileService.createEmpty(userInfo.intIdx, profile);
+                        var page = profileService.createEmpty(userInfo.intIdx(), profile);
                         res.end(Profiles.page(user, profile, page, logged).toString());
                     } catch (Throwable t) {
                         error(ctx, 500, t.getMessage());
@@ -238,7 +238,7 @@ public class Routes {
                 if (isValidLoggedUser(ctx, userInfo)) {
                     try {
                         ctx.request().bodyHandler(it -> {
-                            profileService.update(userInfo.intIdx, profile, Page.fromJson(it.toJsonObject()));
+                            profileService.update(userInfo.intIdx(), profile, Page.fromJson(it.toJsonObject()));
                             res.end();
                         });
                     } catch (Throwable t) {
@@ -265,10 +265,10 @@ public class Routes {
                     // Is still logged?
                     if (isValidLoggedUser(ctx, userInfo)) {
                         try {
-                            var newUser = userService.saveAlias(userInfo.intIdx, alias);
+                            var newUser = userService.saveAlias(userInfo.intIdx(), alias);
                             // Update logged user
                             updateLoggedUser(ctx, newUser);
-                            res.end(String.valueOf(newUser.name.equals(alias)));
+                            res.end(String.valueOf(newUser.name().equals(alias)));
                         } catch (Throwable t) {
                             error(ctx, 500, t.getMessage());
                             t.printStackTrace();

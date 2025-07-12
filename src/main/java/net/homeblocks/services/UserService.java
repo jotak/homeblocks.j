@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class UserService {
     private final FileSystem fs;
-    private final File fsRoot;
     final File userDir;
     private final File indexFile;
     private final Map<Integer, UserInfo> usersIndex = new HashMap<>();
@@ -26,7 +25,6 @@ public class UserService {
 
     public UserService(Vertx vertx, String strRoot) {
         this.fs = vertx.fileSystem();
-        this.fsRoot = new File(strRoot);
         this.userDir = Paths.get(strRoot, "users").toFile();
         this.indexFile = Paths.get(strRoot, "users", "_index.json").toFile();
         init();
@@ -44,17 +42,17 @@ public class UserService {
                 if (it instanceof JsonObject) {
                     var userInfo = UserInfo.fromJson((JsonObject) it);
                     var provKey = providerKey(userInfo);
-                    if (!usersIndex.containsKey(userInfo.intIdx)
-                            && !aliasUsersIndex.containsKey(userInfo.name)
+                    if (!usersIndex.containsKey(userInfo.intIdx())
+                            && !aliasUsersIndex.containsKey(userInfo.name())
                             && !providerUsersIndex.containsKey(provKey)) {
-                        usersIndex.put(userInfo.intIdx, userInfo);
-                        aliasUsersIndex.put(userInfo.name, userInfo);
+                        usersIndex.put(userInfo.intIdx(), userInfo);
+                        aliasUsersIndex.put(userInfo.name(), userInfo);
                         providerUsersIndex.put(provKey, userInfo);
-                        if (userInfo.intIdx > maxIdx.get()) {
-                            maxIdx.set(userInfo.intIdx);
+                        if (userInfo.intIdx() > maxIdx.get()) {
+                            maxIdx.set(userInfo.intIdx());
                         }
                     } else {
-                        System.out.println("Cannot load index for user " + userInfo.intIdx + " (" + userInfo.name
+                        System.out.println("Cannot load index for user " + userInfo.intIdx() + " (" + userInfo.name()
                                 + "), index or alias already used");
                     }
                 } else {
@@ -65,7 +63,7 @@ public class UserService {
     }
 
     private static String providerKey(UserInfo userInfo) {
-        return userInfo.prov + "-" + userInfo.provUId;
+        return userInfo.prov() + "-" + userInfo.provUId();
     }
 
     private boolean isAliasAvailable(String userAlias) {
@@ -82,13 +80,13 @@ public class UserService {
     }
 
     private UserInfo updateUsersIndex(UserInfo userInfo) {
-        var old = usersIndex.get(userInfo.intIdx);
+        var old = usersIndex.get(userInfo.intIdx());
         if (old != null) {
-            aliasUsersIndex.remove(old.name);
+            aliasUsersIndex.remove(old.name());
             providerUsersIndex.remove(providerKey(old));
         }
-        usersIndex.put(userInfo.intIdx, userInfo);
-        aliasUsersIndex.put(userInfo.name, userInfo);
+        usersIndex.put(userInfo.intIdx(), userInfo);
+        aliasUsersIndex.put(userInfo.name(), userInfo);
         providerUsersIndex.put(providerKey(userInfo), userInfo);
         writeUsersIndex();
         return userInfo;
@@ -108,16 +106,12 @@ public class UserService {
         var oldUser = usersIndex.get(id);
         if (oldUser != null) {
             if (isAliasAvailable(userAlias)) {
-                var newUser = new UserInfo(oldUser.prov, oldUser.provUId, id, userAlias);
+                var newUser = new UserInfo(oldUser.prov(), oldUser.provUId(), id, userAlias);
                 return updateUsersIndex(newUser);
             }
             return oldUser;
         }
         throw new RuntimeException("Could not find existing user");
-    }
-
-    private UserInfo findById(int id) {
-        return usersIndex.get(id);
     }
 
     public UserInfo findByAlias(String name) {

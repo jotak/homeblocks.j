@@ -3,7 +3,6 @@ package net.homeblocks.model;
 import io.vertx.core.json.JsonObject;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Profiles {
