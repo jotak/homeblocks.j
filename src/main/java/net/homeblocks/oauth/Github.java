@@ -4,6 +4,7 @@ import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.vertx.ext.auth.oauth2.OAuth2AuthorizationURL;
 
 public class Github extends Provider {
     public Github(String name, String displayName, String redirectURI, OAuth2Auth oAuth2) {
@@ -11,7 +12,8 @@ public class Github extends Provider {
     }
 
     public String authorizeURL(String state) {
-        return super.oAuth2.authorizeURL(new JsonObject().put("state", state));
+        // return super.oAuth2.authorizeURL(new JsonObject().put("state", state));
+        return super.oAuth2.authorizeURL(new OAuth2AuthorizationURL(new JsonObject().put("state", state)));
     }
 
     public Future<String> getUID(User user) {
